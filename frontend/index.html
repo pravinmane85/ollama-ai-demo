@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>AI Support</title>
+</head>
+<body>
+  <h2>Customer Support</h2>
+  <div id="chat"></div>
+
+  <input id="msg" placeholder="Ask your question" />
+  <button onclick="send()">Send</button>
+
+  <script>
+    async function send() {
+      const msg = document.getElementById("msg").value;
+      document.getElementById("chat").innerHTML += `<p><b>You:</b> ${msg}</p>`;
+
+      const res = await fetch("http://localhost:3000/chat", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ message: msg })
+      });
+
+      const data = await res.json();
+      document.getElementById("chat").innerHTML += `<p><b>Bot:</b> ${data.reply}</p>`;
+      document.getElementById("msg").value = "";
+    }
+  </script>
+</body>
+</html>
